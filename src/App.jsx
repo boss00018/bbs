@@ -41,7 +41,7 @@ export default function App() {
         <Contact />
       </main>
       <footer className="footer" style={{ position: 'relative', zIndex: 1 }}>
-        <p>Designed &amp; Built by <span className="accent">Bhanu Sree Bollam</span> · VBIT Hyderabad · {new Date().getFullYear()}</p>
+        <p>Designed &amp; Built by <span className="accent">Bhanu Shree Bollam</span> · VBIT Hyderabad · {new Date().getFullYear()}</p>
       </footer>
     </>
   );

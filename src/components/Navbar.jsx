@@ -26,7 +26,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <span className="navbar__logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         <Logo />
-        <span className="navbar__logo-text">Bhanu Sree<span className="accent">.</span></span>
+        <span className="navbar__logo-text">Bhanu Shree<span className="accent">.</span></span>
       </span>
       <ul className="navbar__links">
         {links.map(l => <li key={l} onClick={() => scrollTo(l)}>{l}</li>)}

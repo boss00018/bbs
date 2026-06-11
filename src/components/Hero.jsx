@@ -47,7 +47,7 @@ export default function Hero() {
         <div className="hero__text">
           <p className="hero__greeting">Hey there, I'm</p>
           <h1 className="hero__name">
-            Bhanu Sree<br /><span className="accent">Bollam</span>
+            Bhanu Shree<br /><span className="accent">Bollam</span>
           </h1>
           <p className="hero__role">
             <span className="typewriter">{displayed}<span className="cursor">|</span></span>
@@ -73,7 +73,7 @@ export default function Hero() {
             <a href="https://linkedin.com/in/" target="_blank" rel="noreferrer" className="social-btn" aria-label="LinkedIn">
               <LinkedinIcon />
             </a>
-            <a href="mailto:bhanusreebollam@gmail.com" className="social-btn" aria-label="Email">
+            <a href="mailto:bhanushreebollam@gmail.com" className="social-btn" aria-label="Email">
               <Mail size={18} />
             </a>
           </div>

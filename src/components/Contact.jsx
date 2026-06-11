@@ -13,7 +13,7 @@ export default function Contact() {
   const submit = e => {
     e.preventDefault();
     const { name, email, message } = form;
-    window.location.href = `mailto:bhanusreebollam@gmail.com?subject=Portfolio Contact from ${name}&body=${message}%0A%0AFrom: ${email}`;
+    window.location.href = `mailto:bhanushreebollam@gmail.com?subject=Portfolio Contact from ${name}&body=${message}%0A%0AFrom: ${email}`;
     setSent(true);
   };
 
@@ -24,14 +24,14 @@ export default function Contact() {
         <p className="section__sub">Open to freelance projects, collaborations, and coffee chats about tech &amp; design.</p>
         <div className="contact__grid">
           <div className="contact__info">
-            <a href="mailto:bhanusreebollam@gmail.com" className="contact__link">
-              <Mail size={18} /> bhanusreebollam@gmail.com
+            <a href="mailto:bhanushreebollam@gmail.com" className="contact__link">
+              <Mail size={18} /> bhanushreebollam@gmail.com
             </a>
             <a href="https://github.com/" target="_blank" rel="noreferrer" className="contact__link">
-              <GithubIcon /> github.com/bhanusreebollam
+              <GithubIcon /> github.com/bhanushreebollam
             </a>
             <a href="https://linkedin.com/in/" target="_blank" rel="noreferrer" className="contact__link">
-              <LinkedinIcon /> linkedin.com/in/bhanusreebollam
+              <LinkedinIcon /> linkedin.com/in/bhanushreebollam
             </a>
             <div className="contact__badge">
               <span className="badge-dot" />
