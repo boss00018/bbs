@@ -114,7 +114,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
       ctx.fillRect(rx, ry, rw, rh);
       ctx.restore();
 
-      // logo centered with padding (contain fit so full logo is always visible)
+      // logo centered with padding
       const img = frontTex.image;
       const pad = 0.15; // 15% padding each side
       const logoW = rw * (1 - pad * 2);
@@ -141,6 +141,54 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
     return composite;
   }, [frontImage, backImage, imageFit, frontTex, backTex, materials.base.map]);
 
+  // Branded Strap Texture Canvas
+  const strapMap = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    // Solid dark ribbon background
+    ctx.fillStyle = '#080b10';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Neon purple border lines
+    ctx.fillStyle = '#7c3aed';
+    ctx.fillRect(0, 0, canvas.width, 3);
+    ctx.fillRect(0, canvas.height - 3, canvas.width, 3);
+
+    const logoImg = frontTex?.image;
+
+    const drawStrap = () => {
+      const spacing = 512;
+      for (let x = 0; x < canvas.width; x += spacing) {
+        // Draw centered logo
+        if (logoImg) {
+          ctx.drawImage(logoImg, x + 40, 12, 40, 40);
+        }
+
+        // Draw name text
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = 'bold 20px Inter, sans-serif';
+        ctx.fillText('BHANU SREE', x + 95, 41);
+
+        // Draw tech sub-text
+        ctx.fillStyle = '#0ea5e9';
+        ctx.font = '600 15px Inter, sans-serif';
+        ctx.fillText('// DESIGN & CODE', x + 240, 39);
+      }
+    };
+
+    drawStrap();
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.RepeatWrapping;
+    tex.needsUpdate = true;
+    return tex;
+  }, [frontTex]);
+
   const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]));
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
@@ -149,13 +197,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
   useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.5, 0]]);
-
-  useEffect(() => {
-    if (hovered) {
-      document.body.style.cursor = dragged ? 'grabbing' : 'grab';
-      return () => void (document.body.style.cursor = 'auto');
-    }
-  }, [hovered, dragged]);
 
   useFrame((state, delta) => {
     if (dragged) {
@@ -178,7 +219,13 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
       band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+      
+      // Stabilize card rotations on all axes to prevent violent spins
+      card.current.setAngvel({
+        x: ang.x - rot.x * 0.2,
+        y: ang.y - rot.y * 0.25,
+        z: ang.z - rot.z * 0.2
+      });
     }
   });
 
@@ -189,10 +236,10 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
     <>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
-        <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
+        <RigidBody position={[0, -1, 0]} ref={j1} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
+        <RigidBody position={[0, -2, 0]} ref={j2} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
+        <RigidBody position={[0, -3, 0]} ref={j3} {...segmentProps}><BallCollider args={[0.1]} /></RigidBody>
+        <RigidBody position={[0, -4, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group scale={2.25} position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
@@ -210,7 +257,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, frontImage = null
       </group>
       <mesh ref={band}>
         <meshLineGeometry />
-        <meshLineMaterial color="white" depthTest={false} resolution={isMobile ? [1000, 2000] : [1000, 1000]} useMap map={texture} repeat={[-4, 1]} lineWidth={lanyardWidth} />
+        <meshLineMaterial color="white" depthTest={false} resolution={isMobile ? [1000, 2000] : [1000, 1000]} useMap map={strapMap || texture} repeat={[-4, 1]} lineWidth={lanyardWidth} />
       </mesh>
     </>
   );

@@ -51,9 +51,20 @@ export default function Experience() {
         <div className="timeline">
           {TIMELINE.map((item, i) => (
             <div key={i} className="timeline__item">
-              <div className="timeline__dot" style={{ background: TYPE_COLOR[item.type] }} />
-              <div className="timeline__content">
-                <span className="timeline__year">{item.year}</span>
+              <div 
+                className="timeline__dot" 
+                style={{ 
+                  background: TYPE_COLOR[item.type],
+                  boxShadow: `0 0 10px ${TYPE_COLOR[item.type]}` 
+                }} 
+              />
+              <div className="timeline__content" style={{ '--item-accent': TYPE_COLOR[item.type] }}>
+                <div className="timeline__meta">
+                  <span className="timeline__year">{item.year}</span>
+                  <span className="timeline__type-tag" style={{ color: TYPE_COLOR[item.type], borderColor: `${TYPE_COLOR[item.type]}40`, background: `${TYPE_COLOR[item.type]}08` }}>
+                    {item.type}
+                  </span>
+                </div>
                 <h3 className="timeline__role">{item.role}</h3>
                 <span className="timeline__org" style={{ color: TYPE_COLOR[item.type] }}>{item.org}</span>
                 <p className="timeline__desc">{item.desc}</p>

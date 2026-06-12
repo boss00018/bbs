@@ -73,6 +73,29 @@ const PROJECTS = [
 ];
 
 export default function Projects() {
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    
+    const tiltMax = 8;
+    const rx = -((y - yc) / yc) * tiltMax;
+    const ry = ((x - xc) / xc) * tiltMax;
+    
+    card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px)`;
+    card.style.setProperty('--x', `${x}px`);
+    card.style.setProperty('--y', `${y}px`);
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+  };
+
   return (
     <section id="projects" className="section projects">
       <div className="section__inner">
@@ -80,7 +103,15 @@ export default function Projects() {
         <p className="section__sub">Things I've shipped — from hackathon nights to polished freelance work.</p>
         <div className="projects__grid">
           {PROJECTS.map((p, i) => (
-            <div key={p.title} className="project-card" style={{ '--card-accent': p.accent }}>
+            <div 
+              key={p.title} 
+              className="project-card" 
+              style={{ '--card-accent': p.accent }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* Reflective glare overlay */}
+              <div className="card-glare" />
               <div className="project-card__top">
                 <div className="project-card__icon-wrap" style={{ background: `${p.accent}1a`, color: p.accent }}>
                   {p.icon}

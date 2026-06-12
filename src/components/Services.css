@@ -14,26 +14,29 @@
   gap: 0.85rem;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  transition: border-color 0.28s, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s;
   cursor: default;
+  transform-style: preserve-3d;
 }
 
 .service-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(124,58,237,0.12), transparent 60%);
+  background: radial-gradient(circle at top left, color-mix(in srgb, var(--s-accent) 12%, transparent), transparent 60%);
   opacity: 0;
   transition: opacity 0.35s;
 }
 
 .service-card:hover {
   border-color: var(--s-accent);
-  transform: translateY(-5px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
-.service-card:hover::before { opacity: 1; }
+.service-card:hover::before,
+.service-card:hover .card-glare { 
+  opacity: 1; 
+}
 
 .service-card__icon {
   width: 52px;
@@ -42,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(124,58,237,0.15);
+  background: color-mix(in srgb, var(--s-accent) 15%, transparent);
   color: var(--s-accent);
   position: relative;
 }

@@ -16,6 +16,16 @@
   -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
 }
 
+/* Dynamic Interactive spotlight grid filter */
+.anim-bg__grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 280px at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(124, 58, 237, 0.08) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* ── ORBS ── */
 .anim-bg__orb {
   position: absolute;
@@ -62,6 +72,22 @@
   opacity: 0.18;
 }
 
+/* ── HUD TEXT WIDGETS ── */
+.anim-bg__hud-item {
+  position: absolute;
+  color: var(--accent2);
+  opacity: 0.11;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  line-height: 1.4;
+  pointer-events: none;
+  letter-spacing: 1.5px;
+  animation: hudFloat 16s ease-in-out infinite alternate;
+  z-index: 1;
+  text-shadow: 0 0 5px rgba(14, 165, 233, 0.25);
+  user-select: none;
+}
+
 /* ── NOISE ── */
 .anim-bg__noise {
   position: absolute;
@@ -96,7 +122,13 @@
   50%      { transform: translate(70px, -90px) scale(1.12); }
 }
 
+@keyframes hudFloat {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg) scale(0.98); }
+  100% { transform: translateY(-30px) rotate(-4deg) scale(1.02); }
+}
+
 /* reduce motion */
 @media (prefers-reduced-motion: reduce) {
-  .anim-bg__orb { animation: none; }
+  .anim-bg__orb, .anim-bg__hud-item { animation: none; }
 }

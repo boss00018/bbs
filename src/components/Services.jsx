@@ -29,6 +29,29 @@ const SERVICES = [
 ];
 
 export default function Services() {
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    
+    const tiltMax = 8;
+    const rx = -((y - yc) / yc) * tiltMax;
+    const ry = ((x - xc) / xc) * tiltMax;
+    
+    card.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-5px)`;
+    card.style.setProperty('--x', `${x}px`);
+    card.style.setProperty('--y', `${y}px`);
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+  };
+
   return (
     <section id="services" className="section services">
       <div className="section__inner">
@@ -36,7 +59,15 @@ export default function Services() {
         <p className="section__sub">From pixels to pipelines — here's how I can help.</p>
         <div className="services__grid">
           {SERVICES.map(s => (
-            <div key={s.title} className="service-card" style={{ '--s-accent': s.accent }}>
+            <div 
+              key={s.title} 
+              className="service-card" 
+              style={{ '--s-accent': s.accent }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* Reflective glare overlay */}
+              <div className="card-glare" />
               <div className="service-card__icon">{s.icon}</div>
               <h3 className="service-card__title">{s.title}</h3>
               <p className="service-card__desc">{s.desc}</p>

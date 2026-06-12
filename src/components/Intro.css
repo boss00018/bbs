@@ -1,0 +1,282 @@
+/* ══════════════════════════════════════════════
+   CINEMATIC INTRO — Cosmic Decryption Matrix Styling
+   ══════════════════════════════════════════════ */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #04060a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── particle canvas ── */
+.intro__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── ambient glow orbs ── */
+.intro__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  animation: orbPulse 6s ease-in-out infinite alternate;
+}
+.intro__orb--1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
+  top: -100px; left: -100px;
+  animation-delay: 0s;
+}
+.intro__orb--2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(14,165,233,0.14) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation-delay: 2s;
+}
+@keyframes orbPulse {
+  from { opacity: 0.5; transform: scale(0.9); }
+  to   { opacity: 0.9;   transform: scale(1.1); }
+}
+
+/* ── central singularity ── */
+.intro__singularity {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #fff 0%, rgba(124,58,237,0.6) 30%, transparent 70%);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 20px rgba(124,58,237,0.8));
+  opacity: 0;
+  transform: scale(0.1);
+  animation: singularityPulse 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes singularityPulse {
+  0% { opacity: 0; transform: scale(0.1); }
+  40% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* ── center stage ── */
+.intro__center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  padding: 2rem;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+}
+
+/* ── SVG signature & multi-layer glow ── */
+.intro__sig {
+  width: clamp(200px, 32vw, 320px);
+  height: auto;
+  overflow: visible;
+  transition: transform 0.4s ease;
+}
+
+/* SVG paths draw animations */
+.intro__stroke {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: stroke-dashoffset 0.05s ease-out;
+}
+.intro__stroke--draw {
+  stroke-dashoffset: 0;
+}
+
+/* ── name letter cipher reveal ── */
+.intro__name {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #f1f5f9;
+  text-align: center;
+  min-height: 2.8rem;
+  text-shadow: 0 0 12px rgba(241, 245, 249, 0.25);
+  letter-spacing: -1px;
+}
+.intro__letter-cipher {
+  color: var(--accent2);
+  opacity: 0.6;
+}
+
+/* ── technical status console ── */
+.intro__status-panel {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(13, 17, 23, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.intro__status-panel--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.intro__status-line {
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: space-between;
+}
+.intro__status-line--highlight {
+  color: var(--accent2);
+}
+.intro__status-line--accent {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* progress bar wrap */
+.intro__bar-wrap {
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 1px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+  position: relative;
+}
+.intro__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 1px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ── interactive neural gate ── */
+.intro__gate-btn-container {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 0.8rem;
+  position: relative;
+}
+.intro__gate-btn-container--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.intro__gate-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  padding: 0.85rem 2.2rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.1);
+  overflow: hidden;
+}
+
+.intro__gate-btn:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: rgba(14, 165, 233, 0.05);
+  box-shadow: 0 0 25px rgba(14, 165, 233, 0.25);
+  transform: translateY(-2px);
+}
+.intro__gate-btn:active {
+  transform: scale(0.98);
+}
+
+/* brackets flourish on button sides */
+.intro__gate-btn::before,
+.intro__gate-btn::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 100%;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.intro__gate-btn::before {
+  top: 0; left: 0;
+  border-right: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-color: var(--accent) transparent var(--accent) var(--accent);
+}
+.intro__gate-btn::after {
+  top: 0; right: 0;
+  border-left: 0;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-color: var(--accent) var(--accent) var(--accent) transparent;
+}
+.intro__gate-btn:hover::before {
+  border-color: var(--accent2) transparent var(--accent2) var(--accent2);
+  width: 14px;
+}
+.intro__gate-btn:hover::after {
+  border-color: var(--accent2) var(--accent2) var(--accent2) transparent;
+  width: 14px;
+}
+
+/* ── warping exit transitions ── */
+.intro--exit-animation .intro__center {
+  opacity: 0;
+  transform: scale(1.4);
+  transition: opacity 0.8s cubic-bezier(0.76, 0, 0.24, 1), transform 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.intro--exit-animation {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: 0.2s;
+}
+
+/* Fallback curtain for smooth exit transition */
+.intro__curtain-wipe {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, #04060a 90%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 5;
+}
+.intro--exit-animation .intro__curtain-wipe {
+  opacity: 1;
+}

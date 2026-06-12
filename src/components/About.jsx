@@ -1,9 +1,56 @@
+import { useState, useEffect, useRef } from 'react';
+
 const STATS = [
   { value: '4+', label: 'Hackathons' },
   { value: '10+', label: 'Projects' },
   { value: '2', label: 'Leadership Roles' },
   { value: '∞', label: 'Curiosity' },
 ];
+
+function AnimatedValue({ value }) {
+  const [displayValue, setDisplayValue] = useState(value === '∞' ? '∞' : '0');
+  const elementRef = useRef(null);
+  const animatedRef = useRef(false);
+
+  useEffect(() => {
+    if (value === '∞') return;
+    
+    const target = parseInt(value, 10);
+    const suffix = value.includes('+') ? '+' : '';
+    if (isNaN(target)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !animatedRef.current) {
+          animatedRef.current = true;
+          let current = 0;
+          const duration = 1500; // Total count duration in ms
+          const steps = 30; // Total update frames
+          const stepTime = duration / steps;
+          const increment = target / steps;
+          
+          let frame = 0;
+          const timer = setInterval(() => {
+            frame++;
+            current = Math.min(target, Math.ceil(increment * frame));
+            setDisplayValue(current + suffix);
+            
+            if (frame >= steps || current >= target) {
+              setDisplayValue(target + suffix);
+              clearInterval(timer);
+            }
+          }, stepTime);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) observer.observe(elementRef.current);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return <span ref={elementRef}>{displayValue}</span>;
+}
 
 export default function About() {
   return (
@@ -33,7 +80,9 @@ export default function About() {
           <div className="about__stats">
             {STATS.map(s => (
               <div key={s.label} className="stat-card">
-                <span className="stat-card__value accent">{s.value}</span>
+                <span className="stat-card__value accent">
+                  <AnimatedValue value={s.value} />
+                </span>
                 <span className="stat-card__label">{s.label}</span>
               </div>
             ))}
